@@ -1,3 +1,5 @@
+import { bindHistoryEvent } from '../utils/event'
+
 const userBehaviour = (function () {
     const defaults = {
         userInfo: true,
@@ -11,7 +13,7 @@ const userBehaviour = (function () {
         processTime: 15,
         processData: function (results) {
             console.log(results);
-        },
+        }
     };
 
     const user_config = {};
@@ -117,6 +119,20 @@ const userBehaviour = (function () {
         if (user_config.clicks) {
             mem.eventListeners.click = window.addEventListener("click", mem.eventsFunctions.click);
         }
+        //添加pushState replaceState event
+        window.history['pushState'] = bindHistoryEvent('pushState')
+        window.history['replaceState'] = bindHistoryEvent('replaceState')
+
+        window.addEventListener('pushState', function(e) {
+            const path = e && e.arguments.length > 2 && e.arguments[2];
+            const url = /^http/.test(path) ? path : (location.protocol + '//' + location.host + path);
+            console.log('pushState old:'+location.href,'new:'+url);
+        });
+        window.addEventListener('replaceState', function(e) {
+            const path = e && e.arguments.length > 2 && e.arguments[2];
+            const url = /^http/.test(path) ? path : (location.protocol + '//' + location.host + path);
+            console.log('replaceState old:'+location.href,'new:'+url);
+        });
         //SCROLL
         if (user_config.mouseScroll) {
             mem.eventListeners.scroll = window.addEventListener("scroll", mem.eventsFunctions.scroll);
