@@ -7,9 +7,9 @@ const userBehaviour = (function () {
         mouseMovement: true,
         mouseMovementInterval: 1,
         mouseScroll: true,
-        mousePageChange: true, //todo
+        mousePageChange: true,
         timeCount: true,
-        clearAfterProcess: true, // todo
+        clearAfterProcess: true,
         processTime: 15,
         processData: function (results) {
             console.log(results);
@@ -50,6 +50,28 @@ const userBehaviour = (function () {
             },
             mouseMovement: (e) => {
                 mem.mousePosition = [e.clientX, e.clientY, getTimeStamp()];
+            },
+            pushState: (e) => {
+                const path = e && e.arguments.length > 2 && e.arguments[2];
+                const url = /^http/.test(path) ? path : (location.protocol + '//' + location.host + path);
+                console.log('pushState old:'+location.href,'new:'+url);
+
+                results.mousePageChanges.push([{
+                    type: 'pushState',
+                    oldUrl: location.href,
+                    newUrl: url
+                }]);
+            },
+            replaceState: (e) => {
+                const path = e && e.arguments.length > 2 && e.arguments[2];
+                const url = /^http/.test(path) ? path : (location.protocol + '//' + location.host + path);
+                console.log('replaceState old:'+location.href,'new:'+url);
+
+                results.mousePageChanges.push([{
+                    type: 'replaceState',
+                    oldUrl: location.href,
+                    newUrl: url
+                }]);
             }
         }
     };
@@ -65,7 +87,7 @@ const userBehaviour = (function () {
                 platform: navigator.platform || '',
                 userAgent: navigator.userAgent || ''
             },
-            time: { //todo
+            time: {
                 startTime: 0,
                 currentTime: 0,
             },
@@ -75,7 +97,7 @@ const userBehaviour = (function () {
             },
             mouseMovements: [],
             mouseScroll: [],
-            contextChange: [], //todo
+            mousePageChanges: [],
             //keyLogger: [], //todo
 
         }
@@ -120,19 +142,14 @@ const userBehaviour = (function () {
             mem.eventListeners.click = window.addEventListener("click", mem.eventsFunctions.click);
         }
         //添加pushState replaceState event
-        window.history['pushState'] = bindHistoryEvent('pushState')
-        window.history['replaceState'] = bindHistoryEvent('replaceState')
+        if(user_config.mousePageChange) {
+            window.history['pushState'] = bindHistoryEvent('pushState')
+            window.history['replaceState'] = bindHistoryEvent('replaceState')
+        }
 
-        window.addEventListener('pushState', function(e) {
-            const path = e && e.arguments.length > 2 && e.arguments[2];
-            const url = /^http/.test(path) ? path : (location.protocol + '//' + location.host + path);
-            console.log('pushState old:'+location.href,'new:'+url);
-        });
-        window.addEventListener('replaceState', function(e) {
-            const path = e && e.arguments.length > 2 && e.arguments[2];
-            const url = /^http/.test(path) ? path : (location.protocol + '//' + location.host + path);
-            console.log('replaceState old:'+location.href,'new:'+url);
-        });
+        // 添加监听事件
+        window.addEventListener('pushState', mem.eventsFunctions.pushState);
+        window.addEventListener('replaceState', men.eventsFunctions.replaceState);
         //SCROLL
         if (user_config.mouseScroll) {
             mem.eventListeners.scroll = window.addEventListener("scroll", mem.eventsFunctions.scroll);
