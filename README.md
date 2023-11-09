@@ -35,11 +35,11 @@ There are two ways to include user-behaviour.js  to your browser:
 1. jsDelivr CDN
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/user-behaviour/dist/index.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/user-behaviour-tracer/dist/index.min.js"></script>
 ```
 2. Local file
 ```html
-<script src="/path/to/user-behaviour.js"></script>
+<script src="/path/to/user-behaviour-tracer.js"></script>
 ```
 
 ## 🔧 Configuration <a name = "config"></a>
