@@ -18,7 +18,6 @@ module.exports = {
     eqeqeq: 'warn',
     'no-else-return': 'warn',
     '@typescript-eslint/no-explicit-any': 'off',
-    'comma-dangle': [2, 'never'],
     'prettier/prettier': 'off',
     'prefer-rest-params': 'off',
     '@typescript-eslint/no-non-null-assertion': 'off',
