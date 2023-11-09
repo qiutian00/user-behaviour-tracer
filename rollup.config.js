@@ -40,6 +40,19 @@ export default [
     ],
     plugins
   },
+  {
+    //入口文件
+    input: './src/core/index.js',
+    output: [
+      //打包 AMD CMD UMD
+      {
+        file: path.resolve(__dirname, './dist/index.js'),
+        format: 'umd',
+        name: 'user-behaviour-tracer'
+      }
+    ],
+    plugins
+  },
   // {
   //   //打包声明文件
   //   input: './src/core/index.ts',
