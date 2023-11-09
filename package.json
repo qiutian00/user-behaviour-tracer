@@ -20,6 +20,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "cross-env NODE_ENV=development rollup -w -c",
     "build": "cross-env NODE_ENV=production rollup -c",
+    "release": "npm run build && npm publish --registry https://registry.npmjs.org/",
     "lint": "eslint src --fix --ext .ts,.tsx ",
     "format": "prettier --write \"**/*.{js,ts,md,json}\" --ignore-path \"./.gitignore\"",
     "view": "npm view user-behaviour versions"
