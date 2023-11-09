@@ -1,4 +1,4 @@
-import { bindHistoryEvent } from '../utils/event'
+import { bindHistoryEvent } from '../utils/event.ts'
 
 const userBehaviour = (function () {
     const defaults = {
