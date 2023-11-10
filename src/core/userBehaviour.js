@@ -82,6 +82,33 @@ class userBehaviour {
                         newURL: e.newURL,
                         time: this.getTimeStamp()
                     }]);
+                },
+                paste: (e) => {
+                    let pastedText = undefined;
+                    // Get Pasted Text
+                    if (window.clipboardData && window.clipboardData.getData) {
+                        pastedText = window.clipboardData.getData('Text');
+                    } else if (event.clipboardData && event.clipboardData.getData) {
+                        pastedText = event.clipboardData.getData('text/plain');
+                    }
+    
+                    if(!!pastedText){
+                        this.results.keyLogger.push({
+                            time: this.getTimeStamp(),
+                            data: pastedText,
+                            type: 'paste'
+                        });
+                    }
+                },
+                keyup: (e) => {
+                    let charCode    = event.keyCode || event.which,
+                        charString  = String.fromCharCode(charCode);
+    
+                    this.results.keyLogger.push({
+                        time: this.getTimeStamp(),
+                        data: charString,
+                        type: 'keypress'
+                    });
                 }
             }
         };
@@ -168,33 +195,8 @@ class userBehaviour {
         }
         // keyLogger
         if(this.user_config.keyLogger) {
-            document.addEventListener('paste', function(){
-                let pastedText = undefined;
-                // Get Pasted Text
-                if (window.clipboardData && window.clipboardData.getData) {
-                    pastedText = window.clipboardData.getData('Text');
-                } else if (event.clipboardData && event.clipboardData.getData) {
-                    pastedText = event.clipboardData.getData('text/plain');
-                }
-
-                if(!!pastedText){
-                    this.results.keyLogger.push({
-                        time: this.getTimeStamp(),
-                        data: pastedText,
-                        type: 'paste'
-                    });
-                }
-            });
-            document.addEventListener('keyup', function(){
-                let charCode    = event.keyCode || event.which,
-                    charString  = String.fromCharCode(charCode);
-
-                this.results.keyLogger.push({
-                    time: this.getTimeStamp(),
-                    data: charString,
-                    type: 'keypress'
-                });
-            });
+            document.addEventListener('paste', this.mem.eventsFunctions.paste);
+            document.addEventListener('keyup', this.mem.eventsFunctions.keyup);
         }
 
         
@@ -254,7 +256,7 @@ const defaults = {
     mouseMovementInterval: 1,
     mouseScroll: true,
     mousePageChange: true,
-    keyLogger: false,
+    keyLogger: true,
     timeCount: true,
     clearAfterProcess: true,
     processTime: 15,
