@@ -15,11 +15,11 @@ export const bindHistoryEvent = <T extends keyof History>(type: T): (() => any) 
   }
 }
 
-export const pageEventList: Array<string> = [
-  'page',
-  'hashchange',
-  'popstate',
-  'pushState',
-  'replaceState',
-  'performance'
-]
+// export const pageEventList: Array<string> = [
+//   'page',
+//   'hashchange',
+//   'popstate',
+//   'pushState',
+//   'replaceState',
+//   'performance'
+// ]

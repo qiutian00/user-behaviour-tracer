@@ -46,8 +46,9 @@ class userBehaviour {
 
                     this.results.mousePageChanges.push([{
                         type: 'pushState',
-                        oldUrl: location.href,
-                        newUrl: url
+                        oldURL: location.href,
+                        newURL: url,
+                        time: this.getTimeStamp()
                     }]);
                 },
                 replaceState: (e) => {
@@ -57,8 +58,17 @@ class userBehaviour {
 
                     this.results.mousePageChanges.push([{
                         type: 'replaceState',
-                        oldUrl: location.href,
-                        newUrl: url
+                        oldURL: location.href,
+                        newURL: url,
+                        time: this.getTimeStamp()
+                    }]);
+                },
+                hashchange: (e) => {
+                    this.results.mousePageChanges.push([{
+                        type: 'hashchange',
+                        oldURL: e.oldURL,
+                        newURL: e.newURL,
+                        time: this.getTimeStamp()
                     }]);
                 }
             }
@@ -142,6 +152,8 @@ class userBehaviour {
             // 添加监听事件
             window.addEventListener('pushState', this.mem.eventsFunctions.pushState);
             window.addEventListener('replaceState', this.mem.eventsFunctions.replaceState);
+
+            window.addEventListener("hashchange", this.mem.eventsFunctions.hashchange);
         }
 
         
