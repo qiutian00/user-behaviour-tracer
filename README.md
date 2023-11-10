@@ -56,6 +56,8 @@ If no configuration was passes the libray will use the default configuration:
     mouseMovement: true,
     mouseMovementInterval: 1,
     mouseScroll: true,
+    mousePageChange: true,
+    keyLogger: true,
     timeCount: true,
     clearAfterProcess: true,
     processTime: 15,
@@ -71,6 +73,8 @@ If no configuration was passes the libray will use the default configuration:
 | mouseMovement         | track mouse movement                                                                               | bool               | true    |
 | mouseMovementInterval | time between tracking mouse movements                                                              | int (seconds)      | 1       |
 | mouseScroll           | track mouse scroll                                                                                 | bool               | true    |
+| mousePageChange           | track history change                                                                                | bool               | true    |
+| keyLogger           | track key up                                                                                | bool               | false    |
 | timeCount             | track time                                                                                         | bool               | true    |
 | clearAfterProcess     | clear results object after processing the data                                                     | bool               | true    |
 | processTime           | time between processing the data automatically <br>(false will enable manual only data processing) | int/bool (seconds) | 15      |
