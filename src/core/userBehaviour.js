@@ -256,7 +256,7 @@ const defaults = {
     mouseMovementInterval: 1,
     mouseScroll: true,
     mousePageChange: true,
-    keyLogger: true,
+    keyLogger: false,
     timeCount: true,
     clearAfterProcess: true,
     processTime: 15,
