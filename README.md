@@ -140,18 +140,23 @@ This method will still require processData to be set in the configuration.
     "clickCount": 3,
     "clickDetails": [
       [
-        554,
-        542,
-        "html>body>div#login>div.ui.container.animated.fadeInDown>div.ui.center.aligned.colored.trends.segment>form.ui.form>div.fields>div.ten.wide.field>input",
-        1572725045313
+        {
+          x: 554,
+          y: 542,
+          node: '<input type=\"text\" name=\"email\" placeholder=\"E-mail address\">',
+          path: "html>body>div#login>div.ui.container.animated.fadeInDown>div.ui.center.aligned.colored.trends.segment>form.ui.form>div.fields>div.ten.wide.field>input",
+          time: 1572725045313
+        }
       ]
     ]
   },
   "mouseMovements": [
     [
-      1031,
-      328,
-      1572725043646
+      {
+        x: 1031,
+        y: 328,
+        time:1572725043646
+      }
     ]
   ],
   "mouseScroll": []

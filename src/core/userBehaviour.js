@@ -34,10 +34,22 @@ class userBehaviour {
                         }
                     })
                     path = path.reverse().join(">");
-                    this.results.clicks.clickDetails.push([e.clientX, e.clientY, path, this.getTimeStamp()]);
+                    this.results.clicks.clickDetails.push([
+                        {
+                            x: e.clientX, 
+                            y: e.clientY, 
+                            path: path, 
+                            node: event.target.outerHTML,
+                            time: this.getTimeStamp()
+                        }
+                    ]);
                 },
                 mouseMovement: (e) => {
-                    this.mem.mousePosition = [e.clientX, e.clientY, this.getTimeStamp()];
+                    this.mem.mousePosition = [{
+                        x: e.clientX, 
+                        y:e.clientY, 
+                        time: this.getTimeStamp()
+                    }];
                 },
                 pushState: (e) => {
                     const path = e && e.arguments.length > 2 && e.arguments[2];
