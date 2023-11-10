@@ -16,7 +16,7 @@ const userBehaviour = (function () {
         }
     };
 
-    const user_config = {};
+    let user_config = {};
 
     const mem = {
         processInterval: null,
@@ -207,5 +207,12 @@ const userBehaviour = (function () {
     };
 
 })();
+
+// userBehaviour export to window
+if(window) {
+    window.userBehaviour = userBehaviour
+}
+
+// console.log('userBehaviour exec', userBehaviour)
 
 export default userBehaviour
