@@ -177,7 +177,7 @@ class userBehaviour {
         }
         // MOUSE MOVEMENTS
         if (this.user_config.mouseMovement) {
-            this.mem.eventListeners.mouseMovement = window.addEventListener("mousemove", this.mem.eventsFunctions.mouseMovement);
+            this.mem.eventListeners.mousemove = window.addEventListener("mousemove", this.mem.eventsFunctions.mousemove);
             this.mem.mouseInterval = setInterval(() => {
                 if (this.mem.mousePosition && this.mem.mousePosition.length) { //if data has been captured
                     if (!this.results.mouseMovements.length || ((this.mem.mousePosition[0] !==  this.results.mouseMovements[this.results.mouseMovements.length - 1][0]) && (this.mem.mousePosition[1] !== this.results.mouseMovements[this.results.mouseMovements.length - 1][1]))) {
@@ -235,9 +235,12 @@ class userBehaviour {
             clearInterval(this.mem.processInterval);
         }
         clearInterval(this.mem.mouseInterval);
-        window.removeEventListener("scroll", this.mem.eventsFunctions.scroll);
-        window.removeEventListener("click", this.mem.eventsFunctions.click);
-        window.removeEventListener("mousemove", this.mem.eventsFunctions.mouseMovement);
+
+        // batch remove listener
+        const listenerKeys = Object.keys(this.mem.eventsFunctions);
+        listenerKeys.forEach(keyName => {
+            window.removeEventListener(keyName, this.mem.eventsFunctions[keyName]);
+        })
     }
 
     result() {
