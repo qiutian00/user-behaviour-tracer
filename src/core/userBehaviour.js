@@ -138,11 +138,13 @@ class userBehaviour {
         if(this.user_config.mousePageChange) {
             window.history['pushState'] = bindHistoryEvent('pushState')
             window.history['replaceState'] = bindHistoryEvent('replaceState')
+
+            // 添加监听事件
+            window.addEventListener('pushState', this.mem.eventsFunctions.pushState);
+            window.addEventListener('replaceState', this.mem.eventsFunctions.replaceState);
         }
 
-        // 添加监听事件
-        window.addEventListener('pushState', this.mem.eventsFunctions.pushState);
-        window.addEventListener('replaceState', this.mem.eventsFunctions.replaceState);
+        
         //SCROLL
         if (this.user_config.mouseScroll) {
             this.mem.eventListeners.scroll = window.addEventListener("scroll", this.mem.eventsFunctions.scroll);
