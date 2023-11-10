@@ -109,6 +109,13 @@ class userBehaviour {
                         data: charString,
                         type: 'keypress'
                     });
+                },
+                visibilitychange: (e) => {
+                    this.results.contextChange.push({
+                        time: this.getTimeStamp(),
+                        url: window.location.href,
+                        type: document['visibilityState']
+                    });
                 }
             }
         };
@@ -140,7 +147,8 @@ class userBehaviour {
             mouseMovements: [],
             mouseScroll: [],
             mousePageChanges: [],
-            keyLogger: []
+            keyLogger: [],
+            contextChange: []
         }
     };
 
@@ -198,7 +206,10 @@ class userBehaviour {
             document.addEventListener('paste', this.mem.eventsFunctions.paste);
             document.addEventListener('keyup', this.mem.eventsFunctions.keyup);
         }
-
+        // contextChange
+        if(this.user_config.contextChange) {
+            document.addEventListener('visibilitychange', this.mem.eventsFunctions.visibilitychange);
+        }
         
         //SCROLL
         if (this.user_config.mouseScroll) {
@@ -220,7 +231,7 @@ class userBehaviour {
     }
 
     stop() {
-        if (user_config.processTime !== false) {
+        if (this.user_config.processTime !== false) {
             clearInterval(this.mem.processInterval);
         }
         clearInterval(this.mem.mouseInterval);
@@ -257,6 +268,7 @@ const defaults = {
     mouseScroll: true,
     mousePageChange: true,
     keyLogger: false,
+    contextChange: false,
     timeCount: true,
     clearAfterProcess: true,
     processTime: 15,

@@ -24,7 +24,7 @@ This Javascript Library allows to track user's behaviour by recording mouse acti
 - Movements
 - Clicks
   - Exact element in CSS format
-  - Timestamp
+  - Time
 - Scroll
 - Time on page
 
@@ -57,7 +57,8 @@ If no configuration was passes the libray will use the default configuration:
     mouseMovementInterval: 1,
     mouseScroll: true,
     mousePageChange: true,
-    keyLogger: true,
+    keyLogger: false,
+    contextChange: false,
     timeCount: true,
     clearAfterProcess: true,
     processTime: 15,
@@ -75,6 +76,7 @@ If no configuration was passes the libray will use the default configuration:
 | mouseScroll           | track mouse scroll                                                                                 | bool               | true    |
 | mousePageChange           | track history change                                                                                | bool               | true    |
 | keyLogger           | track key up                                                                                | bool               | false    |
+| contextChange           | document visibility change                                                                                | bool               | false    |
 | timeCount             | track time                                                                                         | bool               | true    |
 | clearAfterProcess     | clear results object after processing the data                                                     | bool               | true    |
 | processTime           | time between processing the data automatically <br>(false will enable manual only data processing) | int/bool (seconds) | 15      |
@@ -170,7 +172,17 @@ This method will still require processData to be set in the configuration.
             "data": "a",
             "type": "keypress"
         },
-    ]
+    ],
+     "contextChange": [
+        {
+            "time": 1440001429041,
+            "type": "hidden"
+        },
+        {
+            "time": 1440001436778,
+            "type": "visible"
+        },
+    ],
 }
 ```
 

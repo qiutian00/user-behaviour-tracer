@@ -4,9 +4,11 @@ export interface DefaultConfigOptions {
   mouseMovement: boolean,
   mouseMovementInterval: number,
   mouseScroll: boolean,
-  mousePageChange: boolean, //todo
+  mousePageChange: boolean,
+  keyLogger: boolean,
+  contextChange: boolean,
   timeCount: boolean,
-  clearAfterProcess: boolean, // todo
+  clearAfterProcess: boolean,
   processTime: number,
   // processData:  Function,
 }
