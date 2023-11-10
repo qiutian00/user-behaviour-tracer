@@ -234,7 +234,9 @@ const globalInstance =  {
 
 // userBehaviour export to window
 if(window) {
-    window.userBehaviour = globalInstance
+    window.userBehaviour = globalInstance;
+    // start add listener to catch userBehaviour
+    globalInstance.start();
 }
 
 // console.log('userBehaviour exec', userBehaviour)
