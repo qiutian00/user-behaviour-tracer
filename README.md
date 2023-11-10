@@ -159,7 +159,14 @@ This method will still require processData to be set in the configuration.
       }
     ]
   ],
-  "mouseScroll": []
+  "mouseScroll": [],
+  "keyLogger": [
+        {
+            "time": 1440001423813,
+            "data": "a",
+            "type": "keypress"
+        },
+    ]
 }
 ```
 
