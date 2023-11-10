@@ -109,7 +109,7 @@ class userBehaviour {
     
 
     getTimeStamp() {
-        return Date.now();
+        return new Date().toLocaleString();
     };
 
     config(ob) {
@@ -217,7 +217,7 @@ const defaults = {
     clearAfterProcess: true,
     processTime: 15,
     processData: function (results) {
-        console.log(results);
+        // console.log("processData:", results);
     }
 };
 
