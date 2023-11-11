@@ -43,7 +43,11 @@ class UserBehaviour {
       },
       eventsFunctions: {
         scroll: () => {
-          this.results.mouseScroll.push([window.scrollX, window.scrollY, this.getTimeStamp()]);
+          this.results.mouseScroll.push([{
+            x: window.scrollX,
+            y:window.scrollY, 
+            time:this.getTimeStamp()
+          }]);
         },
         click: (e: MouseEvent) => {
           this.results.clicks.clickCount++;
