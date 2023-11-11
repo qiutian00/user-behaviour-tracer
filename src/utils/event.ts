@@ -14,12 +14,3 @@ export const bindHistoryEvent = <T extends keyof History>(type: T): (() => any) 
     return newEvent //返回方法，用于重写history的方法
   }
 }
-
-// export const pageEventList: Array<string> = [
-//   'page',
-//   'hashchange',
-//   'popstate',
-//   'pushState',
-//   'replaceState',
-//   'performance'
-// ]
