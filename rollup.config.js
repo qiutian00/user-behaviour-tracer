@@ -25,7 +25,7 @@ const plugins = [
 export default [
   {
     //入口文件
-    input: './src/core/index.js',
+    input: './src/core/index.ts',
     output: [
       //打包 esModule
       {
@@ -42,7 +42,7 @@ export default [
   },
   {
     //入口文件
-    input: './src/core/index.js',
+    input: './src/core/index.ts',
     output: [
       //打包 AMD CMD UMD
       {
