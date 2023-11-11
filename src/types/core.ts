@@ -10,5 +10,5 @@ export interface DefaultConfigOptions {
   timeCount: boolean,
   clearAfterProcess: boolean,
   processTime: number,
-  // processData:  Function,
+  processData: false | ((data: any) => any),
 }
