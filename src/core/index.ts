@@ -1,9 +1,18 @@
 
 
-import userBehaviour from './userBehaviour'
+import userBehaviour from './userBehaviour.js'
+import {
+  UserConfig
+} from '../types/core.js'
 
+declare global {
+  interface Window {
+    // 在这里添加 window 对象上的属性声明
+    userBehaviour: any;
+  }
+}
 
-const defaults = {
+const defaults: UserConfig = {
   userInfo: true,
   clicks: true,
   mouseMovement: true,
@@ -20,7 +29,8 @@ const defaults = {
   }
 };
 
-const instance =  new userBehaviour(defaults)
+const instance =  new userBehaviour(defaults as UserConfig)
+
 
 const globalInstance =  {
   showConfig: instance.showConfig.bind(instance),
@@ -40,7 +50,6 @@ if(window) {
 
 // console.log('userBehaviour exec', userBehaviour)
 
-// export {
-//   DefaultConfigOptions,
-// } from './types/core.ts'
+
+export { UserConfig };
 export default userBehaviour

@@ -1,14 +1,14 @@
-export interface DefaultConfigOptions {
-  userInfo: boolean,
-  clicks: boolean,
-  mouseMovement: boolean,
-  mouseMovementInterval: number,
-  mouseScroll: boolean,
-  mousePageChange: boolean,
-  keyLogger: boolean,
-  contextChange: boolean,
-  timeCount: boolean,
-  clearAfterProcess: boolean,
-  processTime: number,
-  processData: false | ((data: any) => any),
+export interface UserConfig {
+  timeCount?: boolean;
+  mouseMovement?: boolean;
+  mouseMovementInterval: number;
+  clicks?: boolean;
+  mousePageChange?: boolean;
+  keyLogger?: boolean;
+  contextChange?: boolean;
+  mouseScroll?: boolean;
+  processTime: number | false;
+  processData?: false | ((data: any) => any);
+  clearAfterProcess?: boolean;
+  userInfo?: boolean;
 }
