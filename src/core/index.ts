@@ -2,7 +2,6 @@
 
 import userBehaviour from './userBehaviour.js'
 import {
-  DefaultConfigOptions,
   UserConfig
 } from '../types/core.js'
 
@@ -52,5 +51,5 @@ if(window) {
 // console.log('userBehaviour exec', userBehaviour)
 
 
-export { DefaultConfigOptions };
+export { UserConfig };
 export default userBehaviour
