@@ -1,6 +1,6 @@
 {
   "name": "user-behaviour-tracer",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "catches user behaviour on your website",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -22,6 +22,7 @@
     "dev": "cross-env NODE_ENV=development rollup -w -c",
     "build": "cross-env NODE_ENV=production rollup -c --bundleConfigAsCjs",
     "release": "npm run build && npm publish --registry https://registry.npmjs.org/",
+    "version": "standard-version",
     "lint": "eslint src --fix --ext .ts,.tsx ",
     "format": "prettier --write \"**/*.{js,ts,md,json}\" --ignore-path \"./.gitignore\"",
     "view": "npm view user-behaviour versions"
@@ -54,6 +55,7 @@
     "rollup-plugin-dts": "^5.3.1",
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript2": "^0.32.1",
+    "standard-version": "^9.5.0",
     "typescript": "^4.7.4"
   }
 }
