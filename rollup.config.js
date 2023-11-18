@@ -4,7 +4,7 @@ import { babel } from '@rollup/plugin-babel';
 import { terser } from 'rollup-plugin-terser'
 import typescript from 'rollup-plugin-typescript2'
 import path from 'path'
-// import dts from 'rollup-plugin-dts'
+import { dts } from "rollup-plugin-dts";
 
 const isPro = process.env.NODE_ENV === 'production'
 const plugins = [
@@ -55,14 +55,14 @@ export default [
     // strictDeprecations: true,
     plugins
   },
-  // {
-  //   //打包声明文件
-  //   input: './src/core/index.ts',
-  //   output: {
-  //     input: './src/core/index.ts',
-  //     file: path.resolve(__dirname, './dist/index.d.ts'),
-  //     format: 'es'
-  //   },
-  //   plugins: [dts()]
-  // }
+  {
+    //打包声明文件
+    input: './src/core/index.ts',
+    output: {
+      input: './src/core/index.ts',
+      file: path.resolve(__dirname, './dist/index.d.ts'),
+      format: 'es'
+    },
+    plugins: [dts()]
+  }
 ]
