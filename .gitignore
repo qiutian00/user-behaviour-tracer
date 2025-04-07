@@ -6,3 +6,5 @@ bower_components
 npm-debug
 yarn.lock
 package-lock.json
+coverage
+.DS_Store
