@@ -7,6 +7,14 @@
   "browser": "dist/index.js",
   "types": "./dist/index.d.ts",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qiutian00/user-behaviour-tracer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/qiutian00/user-behaviour-tracer/issues"
+  },
+
   "exports": {
     ".": {
       "import": {
