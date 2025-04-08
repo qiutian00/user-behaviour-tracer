@@ -2,11 +2,7 @@ import { bindHistoryEvent } from '../utils/event';
 import {
   UserConfig,
   UserBehaviourResult,
-  MousePosition,
-  ClickDetail,
-  PageChangeDetail,
-  KeyLogDetail,
-  ContextChangeDetail
+  MousePosition
 } from '../types/core.js'
 
 // 为History事件添加自定义事件接口
