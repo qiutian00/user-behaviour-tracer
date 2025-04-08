@@ -32,6 +32,7 @@
     "build": "cross-env NODE_ENV=production rollup -c --bundleConfigAsCjs",
     "release": "npm run build && npm publish --registry https://registry.npmjs.org/",
     "version": "standard-version",
+    "release:beta": "standard-version --prerelease beta && npm run build && npm publish --tag beta --registry https://registry.npmjs.org/",
     "lint": "eslint src --fix --ext .ts,.tsx ",
     "format": "prettier --write \"**/*.{js,ts,md,json}\" --ignore-path \"./.gitignore\"",
     "view": "npm view user-behaviour versions"
