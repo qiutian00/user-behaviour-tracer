@@ -2,6 +2,40 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.1.6-beta.0 (2025-04-08)
+
+
+### Features
+
+* add key log ([0ae4076](https://github.com/qiutian00/user-behaviour-tracer/commit/0ae407674af1cd4cc177d0e1ef85c2625249ae5f))
+* add simple tests ([94ed673](https://github.com/qiutian00/user-behaviour-tracer/commit/94ed6730908f11ec7a643a8e59fee60de15c6866))
+* build .d.ts file ([d73ff29](https://github.com/qiutian00/user-behaviour-tracer/commit/d73ff29aa8eefd116baf0b63025999b7f66ec574))
+* contextChange func ([baef2c7](https://github.com/qiutian00/user-behaviour-tracer/commit/baef2c726030bc3a00eea1d4ef42599f47d025e1))
+
+
+### Bug Fixes
+
+* 0.0.2 version ([c9c4c21](https://github.com/qiutian00/user-behaviour-tracer/commit/c9c4c21da13f8745b14348be437c833d4ffd3dce))
+* 0.1.0 version ([7d26b88](https://github.com/qiutian00/user-behaviour-tracer/commit/7d26b887b99fc3af6c253382db5e97a54cbdfb39))
+* 通过配置实现对pushState和replaceState行为记录 ([70b6759](https://github.com/qiutian00/user-behaviour-tracer/commit/70b6759f535ca635ffe90ddad65cc0896c3596fd))
+* add hash change ([c76ee59](https://github.com/qiutian00/user-behaviour-tracer/commit/c76ee59c7cd6918d2c864d29854ef938740c1594))
+* batch remove listeners ([37eee09](https://github.com/qiutian00/user-behaviour-tracer/commit/37eee09b1ab27d38481fa7d5317a247a228bdeeb))
+* before use ts ([966ac64](https://github.com/qiutian00/user-behaviour-tracer/commit/966ac644c3a3651d49aa128650febc97f6d62456))
+* change mouseScroll structe ([a65b41a](https://github.com/qiutian00/user-behaviour-tracer/commit/a65b41ada750ac5cb543cc52d8e3cbab1187eb17))
+* change structer ([e4e9577](https://github.com/qiutian00/user-behaviour-tracer/commit/e4e9577525a33532c5b0ee76bfb4b198d65a0b8e))
+* change to class ([4fcd4a7](https://github.com/qiutian00/user-behaviour-tracer/commit/4fcd4a7384a8842797f0af804f934a836689affb))
+* default catch userBehaviour ([c4aa17c](https://github.com/qiutian00/user-behaviour-tracer/commit/c4aa17ca5835c4fc6f12ef19e1f4e68c6984f52c))
+* delete comma-dangle rule ([225c6c1](https://github.com/qiutian00/user-behaviour-tracer/commit/225c6c1ac16e607d3e42ae8b28313923857fd411))
+* export to window ([f2b9bd6](https://github.com/qiutian00/user-behaviour-tracer/commit/f2b9bd6b0ee1fe83bdf2f4222f215b20765215b4))
+* getTimeStamp change ([9802968](https://github.com/qiutian00/user-behaviour-tracer/commit/9802968c544e3f1151a221a3ce69c4d2553ce4e9))
+* import corrrect ([928b84e](https://github.com/qiutian00/user-behaviour-tracer/commit/928b84e9e5a38bc981052d8146ce8f0dcc1c33cb))
+* import right file ([82d6fb8](https://github.com/qiutian00/user-behaviour-tracer/commit/82d6fb80087f5d24100ec178b7de746eeacffe21))
+* new instance put index.js ([36380ca](https://github.com/qiutian00/user-behaviour-tracer/commit/36380ca41bb4b7142a68822ec8be434883ce6d8c))
+* package.json rollup: 2.19.1 ([ff0f5a9](https://github.com/qiutian00/user-behaviour-tracer/commit/ff0f5a962a23fa9ff7b1e084e4840d02878ab835))
+* pushState、replaceState add change ([521bfcc](https://github.com/qiutian00/user-behaviour-tracer/commit/521bfcc122d98499a62a9576c5827db155a529b3))
+* rememeber keyup and key paste ([49773b5](https://github.com/qiutian00/user-behaviour-tracer/commit/49773b55acfeb6c47c213188bb5ebf63733d52b3))
+* rewrite bind history ([9a4843c](https://github.com/qiutian00/user-behaviour-tracer/commit/9a4843ced3bcbd601d534f547a8e5708e43947be))
+
 ### 0.1.5 (2025-04-07)
 
 
