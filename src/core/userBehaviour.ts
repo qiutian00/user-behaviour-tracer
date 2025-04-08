@@ -1,13 +1,40 @@
 import { bindHistoryEvent } from '../utils/event';
 import {
-  UserConfig
+  UserConfig,
+  UserBehaviourResult,
+  MousePosition,
+  ClickDetail,
+  PageChangeDetail,
+  KeyLogDetail,
+  ContextChangeDetail
 } from '../types/core.js'
+
+// 为History事件添加自定义事件接口
+interface CustomHistoryEvent extends Event {
+  arguments?: any[];
+}
 
 class UserBehaviour {
   private defaults: UserConfig;
   private user_config: UserConfig;
-  private mem: any;
-  private results: any;
+  private mem: {
+    processInterval: ReturnType<typeof setInterval> | null;
+    mouseInterval: ReturnType<typeof setInterval> | null;
+    mousePosition: MousePosition[];
+    eventListeners: Record<string, EventListenerOrEventListenerObject>;
+    eventsFunctions: {
+      scroll: (e: Event) => void;
+      click: (e: MouseEvent) => void;
+      mouseMovement: (e: MouseEvent) => void;
+      pushState: (e: CustomHistoryEvent) => void;
+      replaceState: (e: CustomHistoryEvent) => void;
+      hashchange: (e: HashChangeEvent) => void;
+      paste: (e: ClipboardEvent) => void;
+      keyup: (e: KeyboardEvent) => void;
+      visibilitychange: (e: Event) => void;
+    };
+  };
+  private results: UserBehaviourResult;
 
   constructor(defaults: UserConfig) {
     this.defaults = {
@@ -36,35 +63,42 @@ class UserBehaviour {
       processInterval: null,
       mouseInterval: null,
       mousePosition: [],
-      eventListeners: {
-        scroll: null,
-        click: null,
-        mouseMovement: null,
-      },
+      eventListeners: {},
       eventsFunctions: {
-        scroll: () => {
+        scroll: (e: Event) => {
+          if (!this.results.mouseScroll) this.results.mouseScroll = [];
           this.results.mouseScroll.push([{
             x: window.scrollX,
-            y:window.scrollY, 
-            time:this.getTimeStamp()
+            y: window.scrollY, 
+            time: this.getTimeStamp()
           }]);
         },
         click: (e: MouseEvent) => {
+          if (!this.results.clicks) return;
           this.results.clicks.clickCount++;
           const path: string[] = [];
           let node = "";
           e.composedPath().forEach((el: EventTarget, i: number) => {
-            if ((i !== e.composedPath().length - 1) && (i !== e.composedPath().length - 2)) {
-              node = (el as Element).localName;
-              (el as Element).className !== ""
-                ? (el as Element).classList.forEach((clE: string) => {
-                    node += "." + clE;
-                  })
-                : 0;
-              (el as Element).id !== "" ? (node += "#" + (el as Element).id) : 0;
+            if (i < e.composedPath().length - 2) {
+              const element = el as Element;
+              if (!element.localName) return;
+              
+              node = element.localName;
+              
+              if (element.className && element.classList) {
+                element.classList.forEach((clE: string) => {
+                  node += "." + clE;
+                });
+              }
+              
+              if (element.id) {
+                node += "#" + element.id;
+              }
+              
               path.push(node);
             }
           });
+          
           this.results.clicks.clickDetails.push([
             {
               x: e.clientX,
@@ -84,39 +118,42 @@ class UserBehaviour {
             },
           ];
         },
-        pushState: (e: any) => {
-          const path = e && e.arguments.length > 2 && e.arguments[2];
-          const url = /^http/.test(path)
+        pushState: (e: CustomHistoryEvent) => {
+          const args = e.arguments || [];
+          const path = args.length > 2 ? args[2] : '';
+          const url = /^http/.test(path as string)
             ? path
             : location.protocol + '//' + location.host + path;
-          console.log('pushState old:' + location.href, 'new:' + url);
 
+          if (!this.results.mousePageChanges) this.results.mousePageChanges = [];
           this.results.mousePageChanges.push([
             {
               type: 'pushState',
               oldURL: location.href,
-              newURL: url,
+              newURL: url as string,
               time: this.getTimeStamp(),
             },
           ]);
         },
-        replaceState: (e: any) => {
-          const path = e && e.arguments.length > 2 && e.arguments[2];
-          const url = /^http/.test(path)
+        replaceState: (e: CustomHistoryEvent) => {
+          const args = e.arguments || [];
+          const path = args.length > 2 ? args[2] : '';
+          const url = /^http/.test(path as string)
             ? path
             : location.protocol + '//' + location.host + path;
-          console.log('replaceState old:' + location.href, 'new:' + url);
 
+          if (!this.results.mousePageChanges) this.results.mousePageChanges = [];
           this.results.mousePageChanges.push([
             {
               type: 'replaceState',
               oldURL: location.href,
-              newURL: url,
+              newURL: url as string,
               time: this.getTimeStamp(),
             },
           ]);
         },
         hashchange: (e: HashChangeEvent) => {
+          if (!this.results.mousePageChanges) this.results.mousePageChanges = [];
           this.results.mousePageChanges.push([
             {
               type: 'hashchange',
@@ -127,13 +164,14 @@ class UserBehaviour {
           ]);
         },
         paste: (e: ClipboardEvent) => {
+          if (!this.results.keyLogger) this.results.keyLogger = [];
           let pastedText = undefined;
           // Get Pasted Text
           if (e.clipboardData && e.clipboardData.getData) {
             pastedText = e.clipboardData.getData('text/plain');
           }
 
-          if (!!pastedText) {
+          if (pastedText) {
             this.results.keyLogger.push({
               time: this.getTimeStamp(),
               data: pastedText,
@@ -142,6 +180,7 @@ class UserBehaviour {
           }
         },
         keyup: (e: KeyboardEvent) => {
+          if (!this.results.keyLogger) this.results.keyLogger = [];
           const charCode = e.keyCode || e.which;
           const charString = String.fromCharCode(charCode);
 
@@ -152,6 +191,7 @@ class UserBehaviour {
           });
         },
         visibilitychange: (e: Event) => {
+          if (!this.results.contextChange) this.results.contextChange = [];
           this.results.contextChange.push({
             time: this.getTimeStamp(),
             url: window.location.href,
@@ -176,8 +216,8 @@ class UserBehaviour {
         userAgent: navigator.userAgent || '',
       },
       time: {
-        startTime: 0,
-        currentTime: 0,
+        startTime: '',
+        currentTime: '',
       },
       clicks: {
         clickCount: 0,
@@ -191,15 +231,11 @@ class UserBehaviour {
     };
   }
 
-  getTimeStamp() {
-    return new Date().toLocaleString();
+  getTimeStamp(): string {
+    return new Date().toISOString();
   }
 
   config(ob: UserConfig) {
-    // this.user_config = {};
-    // Object.keys(this.defaults).forEach((i) => {
-    //   i in ob ? (this.user_config[i] = ob[i]) : (this.user_config[i] = this.defaults[i]);
-    // });
     this.user_config = {
       ...this.defaults,
       ...ob
@@ -209,69 +245,133 @@ class UserBehaviour {
   start() {
     // TIME SET
     if (this.user_config.timeCount !== undefined && this.user_config.timeCount) {
-      this.results.time.startTime = this.getTimeStamp();
+      if (this.results.time) {
+        this.results.time.startTime = this.getTimeStamp();
+      }
     }
+    
     // MOUSE MOVEMENTS
     if (this.user_config.mouseMovement) {
-      this.mem.eventListeners.mousemove = window.addEventListener(
-        'mousemove',
-        this.mem.eventsFunctions.mouseMovement
-      );
+      // 移除可能存在的监听器，防止重复绑定
+      this.removeEventListener('mousemove');
+      
+      // 添加新的监听器
+      const mouseHandler = ((e: Event) => this.mem.eventsFunctions.mouseMovement(e as MouseEvent)) as EventListener;
+      window.addEventListener('mousemove', mouseHandler);
+      this.mem.eventListeners.mousemove = mouseHandler;
+      
+      // 清除可能存在的旧定时器
+      if (this.mem.mouseInterval) {
+        clearInterval(this.mem.mouseInterval);
+      }
+      
       this.mem.mouseInterval = setInterval(() => {
         if (this.mem.mousePosition && this.mem.mousePosition.length) {
           if (
-            !this.results.mouseMovements.length ||
+            !this.results.mouseMovements?.length ||
             (this.mem.mousePosition[0] !==
               this.results.mouseMovements[this.results.mouseMovements.length - 1][0] &&
               this.mem.mousePosition[1] !==
                 this.results.mouseMovements[this.results.mouseMovements.length - 1][1])
           ) {
+            if (!this.results.mouseMovements) this.results.mouseMovements = [];
             this.results.mouseMovements.push(this.mem.mousePosition);
           }
         }
       }, this.defaults.mouseMovementInterval * 1000);
     }
+    
     // CLICKS
     if (this.user_config.clicks) {
-      this.mem.eventListeners.click = window.addEventListener(
-        'click',
-        this.mem.eventsFunctions.click
-      );
+      this.removeEventListener('click');
+      const clickHandler = ((e: Event) => this.mem.eventsFunctions.click(e as MouseEvent)) as EventListener;
+      window.addEventListener('click', clickHandler);
+      this.mem.eventListeners.click = clickHandler;
     }
-    // 添加pushState replaceState event
+    
+    // History API 事件
     if (this.user_config.mousePageChange) {
       window.history['pushState'] = bindHistoryEvent('pushState');
       window.history['replaceState'] = bindHistoryEvent('replaceState');
 
-      // 添加监听事件
-      window.addEventListener('pushState', this.mem.eventsFunctions.pushState);
-      window.addEventListener('replaceState', this.mem.eventsFunctions.replaceState);
-
-      window.addEventListener('hashchange', this.mem.eventsFunctions.hashchange);
+      // 移除旧的监听器
+      this.removeEventListener('pushState');
+      this.removeEventListener('replaceState');
+      this.removeEventListener('hashchange');
+      
+      // 添加新的监听器
+      const pushStateHandler = ((e: Event) => this.mem.eventsFunctions.pushState(e as CustomHistoryEvent)) as EventListener;
+      const replaceStateHandler = ((e: Event) => this.mem.eventsFunctions.replaceState(e as CustomHistoryEvent)) as EventListener;
+      const hashChangeHandler = ((e: Event) => this.mem.eventsFunctions.hashchange(e as HashChangeEvent)) as EventListener;
+      
+      window.addEventListener('pushState', pushStateHandler);
+      window.addEventListener('replaceState', replaceStateHandler);
+      window.addEventListener('hashchange', hashChangeHandler);
+      
+      this.mem.eventListeners.pushState = pushStateHandler;
+      this.mem.eventListeners.replaceState = replaceStateHandler;
+      this.mem.eventListeners.hashchange = hashChangeHandler;
     }
+    
     // keyLogger
     if (this.user_config.keyLogger) {
-      document.addEventListener('paste', this.mem.eventsFunctions.paste);
-      document.addEventListener('keyup', this.mem.eventsFunctions.keyup);
+      this.removeEventListener('paste');
+      this.removeEventListener('keyup');
+      
+      const pasteHandler = ((e: Event) => this.mem.eventsFunctions.paste(e as ClipboardEvent)) as EventListener;
+      const keyupHandler = ((e: Event) => this.mem.eventsFunctions.keyup(e as KeyboardEvent)) as EventListener;
+      
+      document.addEventListener('paste', pasteHandler);
+      document.addEventListener('keyup', keyupHandler);
+      
+      this.mem.eventListeners.paste = pasteHandler;
+      this.mem.eventListeners.keyup = keyupHandler;
     }
+    
     // contextChange
     if (this.user_config.contextChange) {
+      this.removeEventListener('visibilitychange');
+      
       document.addEventListener('visibilitychange', this.mem.eventsFunctions.visibilitychange);
+      this.mem.eventListeners.visibilitychange = this.mem.eventsFunctions.visibilitychange;
     }
+    
     // SCROLL
     if (this.user_config.mouseScroll) {
-      this.mem.eventListeners.scroll = window.addEventListener(
-        'scroll',
-        this.mem.eventsFunctions.scroll
-      );
+      this.removeEventListener('scroll');
+      
+      window.addEventListener('scroll', this.mem.eventsFunctions.scroll);
+      this.mem.eventListeners.scroll = this.mem.eventsFunctions.scroll;
     }
+    
     // PROCESS INTERVAL
     if (this.user_config.processTime !== false) {
+      // 清除可能存在的旧定时器
+      if (this.mem.processInterval) {
+        clearInterval(this.mem.processInterval);
+      }
+      
       this.mem.processInterval = setInterval(() => {
         if(this.user_config.processData) {
           this.user_config.processData(this.result());
         }
       }, this.user_config.processTime * 1000);
+    }
+  }
+
+  // 辅助方法：移除事件监听器
+  private removeEventListener(eventName: string) {
+    if (this.mem.eventListeners[eventName]) {
+      const target = eventName === 'paste' || eventName === 'keyup' || eventName === 'visibilitychange' 
+        ? document 
+        : window;
+      
+      target.removeEventListener(
+        eventName, 
+        this.mem.eventListeners[eventName] as EventListener
+      );
+      
+      delete this.mem.eventListeners[eventName];
     }
   }
 
@@ -285,37 +385,48 @@ class UserBehaviour {
   }
 
   stop() {
-    if (this.user_config.processTime !== false) {
+    // 清除定时器
+    if (this.mem.processInterval) {
       clearInterval(this.mem.processInterval);
+      this.mem.processInterval = null;
     }
-    clearInterval(this.mem.mouseInterval);
+    
+    if (this.mem.mouseInterval) {
+      clearInterval(this.mem.mouseInterval);
+      this.mem.mouseInterval = null;
+    }
 
-    // batch remove listener
-    const listenerKeys = Object.keys(this.mem.eventsFunctions);
+    // 移除所有事件监听器
+    const listenerKeys = Object.keys(this.mem.eventListeners);
     listenerKeys.forEach((keyName) => {
-      window.removeEventListener(keyName, this.mem.eventsFunctions[keyName]);
+      const target = keyName === 'paste' || keyName === 'keyup' || keyName === 'visibilitychange' 
+        ? document 
+        : window;
+        
+      target.removeEventListener(
+        keyName, 
+        this.mem.eventListeners[keyName] as EventListener
+      );
+      
+      delete this.mem.eventListeners[keyName];
     });
   }
 
-  result() {
+  result(): UserBehaviourResult {
     if (
       this.user_config.userInfo === false &&
       this.results.userInfo !== undefined
     ) {
       delete this.results.userInfo;
     }
-    if (this.user_config.timeCount !== undefined && this.user_config.timeCount) {
+    if (this.user_config.timeCount !== undefined && this.user_config.timeCount && this.results.time) {
       this.results.time.currentTime = this.getTimeStamp();
     }
     return this.results;
   }
 
-  showConfig() {
-    if (Object.keys(this.user_config).length !== Object.keys(this.defaults).length) {
-      return this.defaults;
-    } else {
-      return this.user_config;
-    }
+  showConfig(): UserConfig {
+    return this.user_config;
   }
 }
 
