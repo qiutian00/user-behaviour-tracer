@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.6-beta.1](https://github.com/qiutian00/user-behaviour-tracer/compare/v0.1.6-beta.0...v0.1.6-beta.1) (2025-04-08)
+
+
+### Bug Fixes
+
+* 优化类型安全、事件监听防止内存泄漏，错误处理完善等 ([#4](https://github.com/qiutian00/user-behaviour-tracer/issues/4)) ([ecda200](https://github.com/qiutian00/user-behaviour-tracer/commit/ecda200435fd2e600af872c60c219de157a35cb6))
+
 ### 0.1.6-beta.0 (2025-04-08)
 
 
