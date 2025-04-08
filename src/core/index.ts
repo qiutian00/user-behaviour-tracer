@@ -1,14 +1,19 @@
-
-
-import userBehaviour from './userBehaviour.js'
+import UserBehaviour from './userBehaviour.js'
 import {
-  UserConfig
+  UserConfig,
+  UserBehaviourResult
 } from '../types/core.js'
 
 declare global {
   interface Window {
-    // 在这里添加 window 对象上的属性声明
-    userBehaviour: any;
+    userBehaviour: {
+      showConfig: () => UserConfig;
+      config: (config: UserConfig) => void;
+      start: () => void;
+      stop: () => void;
+      showResult: () => UserBehaviourResult;
+      processResults: () => void;
+    };
   }
 }
 
@@ -25,14 +30,15 @@ const defaults: UserConfig = {
   clearAfterProcess: true,
   processTime: 15,
   processData: function (results) {
-      // console.log("processData:", results);
+    if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
+      console.log("用户行为跟踪数据:", results);
+    }
   }
 };
 
-const instance =  new userBehaviour(defaults as UserConfig)
+const instance = new UserBehaviour(defaults);
 
-
-const globalInstance =  {
+const globalInstance = {
   showConfig: instance.showConfig.bind(instance),
   config: instance.config.bind(instance),
   start: instance.start.bind(instance),
@@ -41,15 +47,10 @@ const globalInstance =  {
   processResults: instance.processResults.bind(instance),
 };
 
-// userBehaviour export to window
-if(window) {
+if (typeof window !== 'undefined') {
   window.userBehaviour = globalInstance;
-  // start add listener to catch userBehaviour
   globalInstance.start();
 }
 
-// console.log('userBehaviour exec', userBehaviour)
-
-
-export { UserConfig };
-export default userBehaviour
+export { UserConfig, UserBehaviourResult };
+export default UserBehaviour;
