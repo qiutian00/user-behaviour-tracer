@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.6-beta.2](https://github.com/qiutian00/user-behaviour-tracer/compare/v0.1.6-beta.1...v0.1.6-beta.2) (2025-04-08)
+
+
+### Bug Fixes
+
+* delete not used import ([90ffdcb](https://github.com/qiutian00/user-behaviour-tracer/commit/90ffdcbf19ab643c80163df1338b24de37e6e17e))
+
 ### [0.1.6-beta.1](https://github.com/qiutian00/user-behaviour-tracer/compare/v0.1.6-beta.0...v0.1.6-beta.1) (2025-04-08)
 
 

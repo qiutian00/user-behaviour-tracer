@@ -1,6 +1,6 @@
 {
   "name": "user-behaviour-tracer",
-  "version": "0.1.6-beta.1",
+  "version": "0.1.6-beta.2",
   "description": "catches user behaviour on your website",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
